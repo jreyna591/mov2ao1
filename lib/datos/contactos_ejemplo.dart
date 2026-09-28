@@ -1,0 +1,58 @@
+import '../modelos/contacto.dart';
+
+List<Contacto> contactosEjemplo = [
+  Contacto(
+    nombre: 'Ana',
+    apellido: 'Gomez',
+    telefono: '1145671234',
+    correo: 'ana@gmail.com',
+    domicilio: 'Tandil 451',
+    fechaNacimiento: '10/03/2000',
+    genero: 'Femenino',
+  ),
+  Contacto(
+    nombre: 'Juan',
+    apellido: 'Perez',
+    telefono: '1145675678',
+    correo: 'juan@gmail.com',
+    domicilio: 'Azul 988',
+    fechaNacimiento: '22/08/1999',
+    genero: 'Masculino',
+  ),
+  Contacto(
+    nombre: 'Maria',
+    apellido: 'Lopez',
+    telefono: '1145679012',
+    correo: 'maria@gmail.com',
+    domicilio: 'Olavarría 1698',
+    fechaNacimiento: '15/01/2001',
+    genero: 'Femenino',
+  ),
+  Contacto(
+    nombre: 'Carlos',
+    apellido: 'Rodríguez',
+    telefono: '1145673456',
+    correo: 'carlos@gmail.com',
+    domicilio: 'Necochea 25',
+    fechaNacimiento: '07/11/1998',
+    genero: 'Masculino',
+  ),
+  Contacto(
+    nombre: 'Lucia',
+    apellido: 'Fernandez',
+    telefono: '1145677890',
+    correo: 'lucia@gmail.com',
+    domicilio: 'Rauch 985',
+    fechaNacimiento: '30/06/2002',
+    genero: 'Femenino',
+  ),
+  Contacto(
+    nombre: 'Diego',
+    apellido: 'Martinez',
+    telefono: '1145672468',
+    correo: 'diego@gmail.com',
+    domicilio: 'Balcarce 136',
+    fechaNacimiento: '12/12/1997',
+    genero: 'Masculino',
+  ),
+];
