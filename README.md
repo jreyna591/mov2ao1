@@ -1,6 +1,6 @@
-# Mi Agenda - Flutter
+# Móvil 2 - Actividad Obligatoria 1
 
-Proyecto realizado para la Actividad Obligatoria Integradora N.º 1 de Programación de Aplicaciones Móviles II.
+Proyecto realizado para la Actividad Obligatoria 1 de Programación de Aplicaciones Móviles II.
 
 La aplicación permite iniciar sesión, visualizar contactos, buscar contactos y agregar nuevos contactos.
 
@@ -11,7 +11,7 @@ La aplicación permite iniciar sesión, visualizar contactos, buscar contactos y
 - Búsqueda de contactos por nombre o apellido.
 - Formulario para agregar contactos.
 - Campos de nombre, apellido, teléfono, correo, domicilio, fecha de nacimiento y género.
-- Selector de género: Femenino o Masculino.
+- Selector de género: femenino o masculino.
 - Uso de Provider para manejar los contactos mientras la aplicación está abierta.
 - Los contactos agregados se eliminan al cerrar la aplicación, ya que no se utiliza base de datos.
 
