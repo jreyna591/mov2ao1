@@ -1,17 +1,23 @@
-# jreyna591m2
+# Mi Agenda - Flutter
 
-A new Flutter project.
+Proyecto realizado para la Actividad Obligatoria Integradora N.º 1 de Programación de Aplicaciones Móviles II.
 
-## Getting Started
+La aplicación permite iniciar sesión, visualizar contactos, buscar contactos y agregar nuevos contactos.
 
-This project is a starting point for a Flutter application.
+## Funcionalidades
 
-A few resources to get you started if this is your first Flutter project:
+- Inicio de sesión con usuario y contraseña.
+- Lista de contactos de ejemplo.
+- Búsqueda de contactos por nombre o apellido.
+- Formulario para agregar contactos.
+- Campos de nombre, apellido, teléfono, correo, domicilio, fecha de nacimiento y género.
+- Selector de género: Femenino o Masculino.
+- Uso de Provider para manejar los contactos mientras la aplicación está abierta.
+- Los contactos agregados se eliminan al cerrar la aplicación, ya que no se utiliza base de datos.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Credenciales de prueba
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```text
+Usuario: admin
+Contraseña: 1234
+```
