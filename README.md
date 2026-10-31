@@ -1,8 +1,6 @@
 # Mi Agenda
 
-Aplicación Android desarrollada con Flutter para las Actividades Obligatorias Integradoras N.º 1 y N.º 2 de Programación de Aplicaciones Móviles II.
-
-Este proyecto es una práctica universitaria de gestión de contactos.
+Aplicación Android desarrollada con Flutter para las Actividades Obligatorias Integradoras 1 y 2 de Programación de Aplicaciones Móviles 2.
 
 ## Funcionalidades
 
