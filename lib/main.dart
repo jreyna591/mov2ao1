@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pantallas/pantalla_agregar_contacto.dart';
 import 'pantallas/pantalla_contactos.dart';
 import 'pantallas/pantalla_login.dart';
 import 'provider/contactos_provider.dart';
 
-void main() {
-  runApp(const MiAplicacion());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences preferencias = await SharedPreferences.getInstance();
+
+  bool sesionIniciada = preferencias.getBool('sesionIniciada') ?? false;
+
+  runApp(MiAplicacion(sesionIniciada: sesionIniciada));
 }
 
 class MiAplicacion extends StatelessWidget {
-  const MiAplicacion({super.key});
+  final bool sesionIniciada;
+
+  const MiAplicacion({super.key, this.sesionIniciada = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +32,9 @@ class MiAplicacion extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
-        home: const PantallaLogin(),
+        home: sesionIniciada
+            ? const PantallaContactos()
+            : const PantallaLogin(),
         routes: {
           '/contactos': (context) => const PantallaContactos(),
           '/agregar': (context) => const PantallaAgregarContacto(),

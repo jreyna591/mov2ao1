@@ -5,7 +5,9 @@ import '../modelos/contacto.dart';
 import '../provider/contactos_provider.dart';
 
 class PantallaAgregarContacto extends StatefulWidget {
-  const PantallaAgregarContacto({super.key});
+  final Contacto? contacto;
+
+  const PantallaAgregarContacto({super.key, this.contacto});
 
   @override
   State<PantallaAgregarContacto> createState() =>
@@ -22,42 +24,129 @@ class _PantallaAgregarContactoState extends State<PantallaAgregarContacto> {
   String fechaElegida = '';
   String generoElegido = 'Femenino';
 
+  @override
+  void initState() {
+    super.initState();
+
+    Contacto? contacto = widget.contacto;
+
+    if (contacto != null) {
+      controladorNombre.text = contacto.nombre;
+      controladorApellido.text = contacto.apellido;
+      controladorTelefono.text = contacto.telefono;
+      controladorCorreo.text = contacto.correo;
+      controladorDomicilio.text = contacto.domicilio;
+      fechaElegida = contacto.fechaNacimiento;
+      generoElegido = contacto.genero;
+    }
+  }
+
   Future<void> elegirFecha() async {
+    DateTime fechaInicial = DateTime.now();
+
+    if (fechaElegida.isNotEmpty) {
+      List<String> partes = fechaElegida.split('/');
+
+      fechaInicial = DateTime(
+        int.parse(partes[2]),
+        int.parse(partes[1]),
+        int.parse(partes[0]),
+      );
+    }
+
     DateTime? fecha = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
+      initialDate: fechaInicial,
     );
 
-    if (fecha != null) {
-      setState(() {
-        fechaElegida = '${fecha.day}/${fecha.month}/${fecha.year}';
-      });
+    if (fecha == null || !mounted) {
+      return;
     }
+
+    setState(() {
+      fechaElegida = '${fecha.day}/${fecha.month}/${fecha.year}';
+    });
   }
 
-  void guardarContacto() {
-    if (controladorNombre.text.isEmpty ||
-        controladorApellido.text.isEmpty ||
-        controladorTelefono.text.isEmpty) {
+  Future<void> guardarContacto() async {
+    String nombre = controladorNombre.text.trim();
+    String apellido = controladorApellido.text.trim();
+    String telefono = controladorTelefono.text.trim();
+
+    if (nombre.isEmpty || apellido.isEmpty || telefono.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Completá nombre, apellido y teléfono')),
       );
       return;
     }
 
-    Contacto contactoNuevo = Contacto(
-      nombre: controladorNombre.text,
-      apellido: controladorApellido.text,
-      telefono: controladorTelefono.text,
-      correo: controladorCorreo.text,
-      domicilio: controladorDomicilio.text,
+    Contacto contacto = Contacto(
+      id: widget.contacto?.id,
+      nombre: nombre,
+      apellido: apellido,
+      telefono: telefono,
+      correo: controladorCorreo.text.trim(),
+      domicilio: controladorDomicilio.text.trim(),
       fechaNacimiento: fechaElegida,
       genero: generoElegido,
     );
 
-    context.read<ContactosProvider>().agregarContacto(contactoNuevo);
+    ContactosProvider contactosProvider = context.read<ContactosProvider>();
+
+    if (widget.contacto == null) {
+      await contactosProvider.agregarContacto(contacto);
+    } else {
+      await contactosProvider.modificarContacto(contacto);
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.pop(context);
+  }
+
+  Future<void> eliminarContacto() async {
+    bool? confirmar = await showDialog<bool>(
+      context: context,
+      builder: (contextoDialogo) {
+        return AlertDialog(
+          title: const Text('Eliminar contacto'),
+          content: Text(
+            '¿Querés eliminar a ${widget.contacto!.nombre} '
+            '${widget.contacto!.apellido}?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(contextoDialogo, false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(contextoDialogo, true);
+              },
+              child: const Text('Eliminar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmar != true || !mounted) {
+      return;
+    }
+
+    await context.read<ContactosProvider>().eliminarContacto(
+      widget.contacto!.id!,
+    );
+
+    if (!mounted) {
+      return;
+    }
 
     Navigator.pop(context);
   }
@@ -76,9 +165,21 @@ class _PantallaAgregarContactoState extends State<PantallaAgregarContacto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar contacto'),
+        title: Text(
+          widget.contacto == null ? 'Agregar contacto' : 'Editar contacto',
+        ),
         actions: [
-          IconButton(icon: const Icon(Icons.check), onPressed: guardarContacto),
+          if (widget.contacto != null)
+            IconButton(
+              tooltip: 'Eliminar contacto',
+              icon: const Icon(Icons.close, color: Colors.red),
+              onPressed: eliminarContacto,
+            ),
+          IconButton(
+            tooltip: 'Guardar contacto',
+            icon: const Icon(Icons.check),
+            onPressed: guardarContacto,
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -147,9 +248,11 @@ class _PantallaAgregarContactoState extends State<PantallaAgregarContacto> {
             RadioGroup<String>(
               groupValue: generoElegido,
               onChanged: (valor) {
-                setState(() {
-                  generoElegido = valor!;
-                });
+                if (valor != null) {
+                  setState(() {
+                    generoElegido = valor;
+                  });
+                }
               },
               child: Column(
                 children: [
